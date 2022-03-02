@@ -1,0 +1,20 @@
+steps:
+  - name: "gcr,io/cloud-builders/docker"
+    entrypoint: 'bash'
+    ärgs:
+      - '-ç'
+      - |
+        docker pull gcr.io/astute-surge-337503/tomcat:latest || exit 0
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [ 'build', '-t', 'gcr.io/astute-surge-337503/tomcat', '--cache-from', 'gcr.io/astute-surge-337503/tomcat', '.']
+
+  - name: 'gcr.io/cloud-buildrrs/docker'
+    args: ['push', 'gcr.io/astute-surge-337503/tomcat']
+
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: ['beta', 'run', 'deploy', 'tomcat', '--image', 'gcr.io/astute-surge-337503/tomcat', '--region', 'us-central1', '--platform', 'managed', '--allow-unauthenticated']
+images: 'gcr.io/astute-surge-337503/tomcat'
+
+
+
